@@ -96,22 +96,21 @@ Todas tienen valor por defecto para team-03, así que **no hace falta `terraform
 
 ## Uso (ciclo completo con evidencias)
 
-Ejecutar desde esta carpeta. Los comandos funcionan igual en PowerShell y en bash; cada salida queda guardada en `evidencias/`.
+Ejecutar desde esta carpeta; los comandos funcionan igual en PowerShell y en bash. La evidencia de cada gate es una **captura de pantalla** guardada en `evidencias/` con el número del gate (`01-init.png`, `02-validate.png`, …). Usar `cls` antes de cada comando para que la captura quede limpia. `evidencias/REGISTRO.md` las muestra todas.
 
 ```powershell
 # 1. Init
-terraform init -no-color | tee evidencias/01-init.txt
+terraform init
 
 # 2. Validate (+ formato: no debe imprimir nada)
 terraform fmt -check -recursive
-terraform validate -no-color | tee evidencias/02-validate.txt
+terraform validate
 
 # 3. Plan (esperado: "Plan: 11 to add, 0 to change, 0 to destroy")
-terraform plan -out=tfplan -no-color | tee evidencias/03-plan.txt
+terraform plan -out=tfplan
 
 # 4. Apply del plan revisado
-terraform apply -no-color tfplan | tee evidencias/04-apply.txt
-terraform output -no-color | tee evidencias/04-outputs.txt
+terraform apply tfplan
 ```
 
 ## Validación (functional check)
@@ -119,19 +118,19 @@ terraform output -no-color | tee evidencias/04-outputs.txt
 Esperar **1 o 2 minutos** después del apply, porque la EC2 instala Apache y lee S3.
 
 ```powershell
-curl.exe -s $(terraform output -raw test_url) | tee evidencias/05-functional-check.html
+curl.exe -s $(terraform output -raw test_url)
 ```
 
 (En Linux/macOS usar `curl` en vez de `curl.exe`.)
 
-**PASS** si la página muestra el Instance ID, la AZ (`us-east-1a`) y, bajo *Estado persistente en S3*, el JSON con `"message": "Estado persistente almacenado fuera de EC2"`. **FAIL** si aparece `ERROR: no fue posible leer S3`. Guardar también una captura del navegador abriendo `http://<IP>` como `evidencias/05-functional-check.png`.
+**PASS** si la página muestra el Instance ID, la AZ (`us-east-1a`) y, bajo *Estado persistente en S3*, el JSON con `"message": "Estado persistente almacenado fuera de EC2"`. **FAIL** si aparece `ERROR: no fue posible leer S3`. Capturas: la terminal (`05-functional-check-terminal.png`) y el navegador abriendo `http://<IP>` (`05-functional-check.png`).
 
 ## Cleanup
 
 Primero confirmar que el state solo tiene recursos del reto (solo `data.*` y recursos `dcl-tf`, ningún `aws_vpc` ni `aws_subnet`):
 
 ```powershell
-terraform state list | tee evidencias/06-state-list.txt
+terraform state list
 
 # Este comando NO debe imprimir nada (PowerShell):
 terraform state list | Select-String -Pattern '^aws_(vpc|subnet)\.'
@@ -141,8 +140,8 @@ terraform state list | Select-String -Pattern '^aws_(vpc|subnet)\.'
 Luego destruir (esperado: `Destroy complete! Resources: 11 destroyed.`) y comprobar que la red base sigue en pie:
 
 ```powershell
-terraform destroy -auto-approve -no-color | tee evidencias/07-destroy.txt   # la revisión es el state list anterior
-aws ec2 describe-vpcs --region us-east-1 --filters Name=tag:Name,Values=dcl-dev-vpc --query "Vpcs[].[VpcId,CidrBlock]" --output text | tee evidencias/08-vpc-intacta.txt
+terraform destroy -auto-approve   # la revisión es el state list anterior
+aws ec2 describe-vpcs --region us-east-1 --filters Name=tag:Name,Values=dcl-dev-vpc --query "Vpcs[].[VpcId,CidrBlock]" --output text
 ```
 
 Si la red se creó con `red-base/`, eliminarla al final y **solo después** del destroy del reto (antes, AWS lo rechaza porque la VPC todavía está en uso):
@@ -194,7 +193,7 @@ reto-terraform-dcl/
 ├── .gitignore
 ├── .gitattributes            # user data siempre con saltos de línea LF
 ├── README.md
-└── evidencias/               # salidas de cada gate + REGISTRO.md
+└── evidencias/               # capturas de cada gate + REGISTRO.md
 ```
 
 Se sigue la estructura sugerida del reto; solo se separan `data.tf` (para que se vea qué es de solo lectura), la plantilla del user data y el JSON del estado. `red-base/` es un prerrequisito opcional: no forma parte del slice ni de su state.
