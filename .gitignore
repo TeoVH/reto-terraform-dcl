@@ -1,0 +1,17 @@
+# Directorio de providers/módulos descargados
+.terraform/
+
+# State local (contiene IDs y datos de la cuenta)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Variables reales del equipo
+terraform.tfvars
+
+# Planes guardados con -out y logs de error
+tfplan
+*.tfplan
+crash.log
+
+# Nota: .terraform.lock.hcl SÍ se versiona.

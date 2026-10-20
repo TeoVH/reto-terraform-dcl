@@ -1,0 +1,433 @@
+data.aws_vpc.existing: Reading...
+data.aws_ami.al2023: Reading...
+data.aws_caller_identity.current: Reading...
+data.aws_caller_identity.current: Read complete after 0s [id=025452941183]
+data.aws_ami.al2023: Read complete after 1s [id=ami-0567589d25e06853e]
+data.aws_vpc.existing: Read complete after 1s [id=vpc-0d217b777ec087cfe]
+data.aws_subnet.public: Reading...
+data.aws_subnet.public: Read complete after 0s [id=subnet-0bd87c94fa7c62e13]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_instance_profile.web will be created
+  + resource "aws_iam_instance_profile" "web" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "dcl-tf-role-web"
+      + name_prefix = (known after apply)
+      + path        = "/"
+      + role        = "dcl-tf-role-web"
+      + tags        = {
+          + "Name" = "dcl-tf-role-web"
+        }
+      + tags_all    = {
+          + "Name"            = "dcl-tf-role-web"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + unique_id   = (known after apply)
+    }
+
+  # aws_iam_policy.s3_state will be created
+  + resource "aws_iam_policy" "s3_state" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Lectura del objeto state/dcl-state.json del reto Terraform"
+      + id               = (known after apply)
+      + name             = "dcl-tf-policy-s3-state"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Name" = "dcl-tf-policy-s3-state"
+        }
+      + tags_all         = {
+          + "Name"            = "dcl-tf-policy-s3-state"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+    }
+
+  # aws_iam_role.web will be created
+  + resource "aws_iam_role" "web" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "dcl-tf-role-web"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Name" = "dcl-tf-role-web"
+        }
+      + tags_all              = {
+          + "Name"            = "dcl-tf-role-web"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.web_s3_state will be created
+  + resource "aws_iam_role_policy_attachment" "web_s3_state" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "dcl-tf-role-web"
+    }
+
+  # aws_instance.web will be created
+  + resource "aws_instance" "web" {
+      + ami                                  = "ami-0567589d25e06853e"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = true
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = "dcl-tf-role-web"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = "subnet-0bd87c94fa7c62e13"
+      + tags                                 = {
+          + "Name" = "dcl-tf-web"
+        }
+      + tags_all                             = {
+          + "Name"            = "dcl-tf-web"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            set -e
+            dnf install -y httpd
+            systemctl enable --now httpd
+            TOKEN=$(curl -sS -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" \
+            http://169.254.169.254/latest/api/token)
+            INSTANCE_ID=$(curl -sS -H "X-aws-ec2-metadata-token: $TOKEN" \
+            http://169.254.169.254/latest/meta-data/instance-id)
+            AZ=$(curl -sS -H "X-aws-ec2-metadata-token: $TOKEN" \
+            http://169.254.169.254/latest/meta-data/placement/availability-zone)
+            BOOT_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            echo "instance=$INSTANCE_ID boot=$BOOT_TIME" > /var/www/html/local-state.txt
+            if aws s3 cp s3://dcl-tf-state-025452941183-team-03/state/dcl-state.json /var/www/html/dcl-state.json; then
+            S3_STATE=$(cat /var/www/html/dcl-state.json)
+            else
+            S3_STATE='ERROR: no fue posible leer S3'
+            fi
+            cat > /var/www/html/index.html <<EOF
+            <html><body>
+            <h1>Digital Cafe Luna</h1>
+            <p>Instance ID: $INSTANCE_ID</p>
+            <p>Availability Zone: $AZ</p>
+            <h2>Estado local efimero</h2>
+            <pre>$(cat /var/www/html/local-state.txt)</pre>
+            <h2>Estado persistente en S3</h2>
+            <pre>$S3_STATE</pre>
+            </body></html>
+            EOF
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = true
+      + volume_tags                          = {
+          + "Name"            = "dcl-tf-web-root"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = "disabled"
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = "required"
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = true
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_s3_bucket.state will be created
+  + resource "aws_s3_bucket" "state" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = "dcl-tf-state-025452941183-team-03"
+      + bucket_domain_name          = (known after apply)
+      + bucket_namespace            = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_region               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = true
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + tags                        = {
+          + "Name" = "dcl-tf-state-025452941183-team-03"
+        }
+      + tags_all                    = {
+          + "Name"            = "dcl-tf-state-025452941183-team-03"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + cors_rule (known after apply)
+
+      + grant (known after apply)
+
+      + lifecycle_rule (known after apply)
+
+      + logging (known after apply)
+
+      + object_lock_configuration (known after apply)
+
+      + replication_configuration (known after apply)
+
+      + server_side_encryption_configuration (known after apply)
+
+      + versioning (known after apply)
+
+      + website (known after apply)
+    }
+
+  # aws_s3_bucket_public_access_block.state will be created
+  + resource "aws_s3_bucket_public_access_block" "state" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + region                  = "us-east-1"
+      + restrict_public_buckets = true
+    }
+
+  # aws_s3_object.state will be created
+  + resource "aws_s3_object" "state" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = (known after apply)
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "application/json"
+      + etag                   = "3021c42221254f3c91a6d1def7e61a2c"
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "state/dcl-state.json"
+      + kms_key_id             = (known after apply)
+      + region                 = "us-east-1"
+      + server_side_encryption = (known after apply)
+      + source                 = "./files/dcl-state.json"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name" = "dcl-state.json"
+        }
+      + tags_all               = {
+          + "Name"            = "dcl-state.json"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_security_group.web will be created
+  + resource "aws_security_group" "web" {
+      + arn                    = (known after apply)
+      + description            = "HTTP de entrada para la EC2 del reto Terraform"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "dcl-tf-sg-web"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "dcl-tf-sg-web"
+        }
+      + tags_all               = {
+          + "Name"            = "dcl-tf-sg-web"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + vpc_id                 = "vpc-0d217b777ec087cfe"
+    }
+
+  # aws_vpc_security_group_egress_rule.all will be created
+  + resource "aws_vpc_security_group_egress_rule" "all" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + description            = "Toda la salida"
+      + id                     = (known after apply)
+      + ip_protocol            = "-1"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags                   = {
+          + "Name" = "dcl-tf-sg-web-out-all"
+        }
+      + tags_all               = {
+          + "Name"            = "dcl-tf-sg-web-out-all"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+    }
+
+  # aws_vpc_security_group_ingress_rule.http will be created
+  + resource "aws_vpc_security_group_ingress_rule" "http" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + description            = "HTTP desde Internet"
+      + from_port              = 80
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags                   = {
+          + "Name" = "dcl-tf-sg-web-in-http"
+        }
+      + tags_all               = {
+          + "Name"            = "dcl-tf-sg-web-in-http"
+          + "dcl:environment" = "dev"
+          + "dcl:managed-by"  = "terraform"
+          + "dcl:owner-team"  = "team-03"
+          + "dcl:project"     = "digital-cafe-luna"
+        }
+      + to_port                = 80
+    }
+
+Plan: 11 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ami_id            = "ami-0567589d25e06853e"
+  + bucket_name       = "dcl-tf-state-025452941183-team-03"
+  + instance_id       = (known after apply)
+  + public_ip         = (known after apply)
+  + reused_network    = {
+      + subnet_az   = "us-east-1a"
+      + subnet_cidr = "10.20.1.0/24"
+      + subnet_id   = "subnet-0bd87c94fa7c62e13"
+      + vpc_cidr    = "10.20.0.0/16"
+      + vpc_id      = "vpc-0d217b777ec087cfe"
+    }
+  + role_arn          = (known after apply)
+  + security_group_id = (known after apply)
+  + test_url          = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"

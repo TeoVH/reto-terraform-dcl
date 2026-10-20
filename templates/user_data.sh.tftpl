@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+dnf install -y httpd
+systemctl enable --now httpd
+TOKEN=$(curl -sS -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" \
+http://169.254.169.254/latest/api/token)
+INSTANCE_ID=$(curl -sS -H "X-aws-ec2-metadata-token: $TOKEN" \
+http://169.254.169.254/latest/meta-data/instance-id)
+AZ=$(curl -sS -H "X-aws-ec2-metadata-token: $TOKEN" \
+http://169.254.169.254/latest/meta-data/placement/availability-zone)
+BOOT_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+echo "instance=$INSTANCE_ID boot=$BOOT_TIME" > /var/www/html/local-state.txt
+if aws s3 cp s3://${bucket_name}/state/dcl-state.json /var/www/html/dcl-state.json; then
+S3_STATE=$(cat /var/www/html/dcl-state.json)
+else
+S3_STATE='ERROR: no fue posible leer S3'
+fi
+cat > /var/www/html/index.html <<EOF
+<html><body>
+<h1>Digital Cafe Luna</h1>
+<p>Instance ID: $INSTANCE_ID</p>
+<p>Availability Zone: $AZ</p>
+<h2>Estado local efimero</h2>
+<pre>$(cat /var/www/html/local-state.txt)</pre>
+<h2>Estado persistente en S3</h2>
+<pre>$S3_STATE</pre>
+</body></html>
+EOF

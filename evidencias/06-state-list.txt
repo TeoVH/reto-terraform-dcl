@@ -1,0 +1,15 @@
+data.aws_ami.al2023
+data.aws_caller_identity.current
+data.aws_subnet.public
+data.aws_vpc.existing
+aws_iam_instance_profile.web
+aws_iam_policy.s3_state
+aws_iam_role.web
+aws_iam_role_policy_attachment.web_s3_state
+aws_instance.web
+aws_s3_bucket.state
+aws_s3_bucket_public_access_block.state
+aws_s3_object.state
+aws_security_group.web
+aws_vpc_security_group_egress_rule.all
+aws_vpc_security_group_ingress_rule.http

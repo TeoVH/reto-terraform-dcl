@@ -1,0 +1,4 @@
+# El user data debe quedar con saltos de línea LF aunque se clone en Windows;
+# con CRLF el script falla dentro de la EC2.
+*.tftpl text eol=lf
+*.sh    text eol=lf

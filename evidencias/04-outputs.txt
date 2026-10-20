@@ -1,0 +1,14 @@
+ami_id = "ami-0567589d25e06853e"
+bucket_name = "dcl-tf-state-025452941183-team-03"
+instance_id = "i-056f4b5cf1e566e16"
+public_ip = "100.58.210.143"
+reused_network = {
+  "subnet_az" = "us-east-1a"
+  "subnet_cidr" = "10.20.1.0/24"
+  "subnet_id" = "subnet-0bd87c94fa7c62e13"
+  "vpc_cidr" = "10.20.0.0/16"
+  "vpc_id" = "vpc-0d217b777ec087cfe"
+}
+role_arn = "arn:aws:iam::025452941183:role/dcl-tf-role-web"
+security_group_id = "sg-052ebcbcb142d6861"
+test_url = "http://100.58.210.143"
